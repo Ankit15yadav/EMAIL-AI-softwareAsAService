@@ -14,7 +14,7 @@ const LinkAccountButton = () => {
             }}
 
         >
-            Link Account;
+            Link Account
         </Button>
     )
 }

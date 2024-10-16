@@ -5,6 +5,8 @@ import { db } from "@/server/db";
 import { auth } from "@clerk/nextjs/server";
 import { url } from "inspector";
 import { NextRequest, NextResponse } from "next/server";
+import { waitUntil } from "@vercel/functions"
+import axios from "axios";
 
 export const GET = async (req: NextRequest) => {
     const { userId } = await auth();
@@ -54,6 +56,18 @@ export const GET = async (req: NextRequest) => {
         }
     })
 
-    console.log('user id is', userId);
+    waitUntil(
+        axios.post(`${process.env.NEXT_PUBLIC_URL}/api/initial-sync`, {
+            accountId: token.accountId.toString(),
+            userId,
+
+        }).then(response => {
+            console.log('Intial sync triggered', response.data)
+        }).catch(error => {
+            console.error('Failed to trigger intial sync', error);
+        })
+    )
+
+
     return NextResponse.redirect(new URL('/mail', req.url));
 }
