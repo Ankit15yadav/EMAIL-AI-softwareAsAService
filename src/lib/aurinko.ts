@@ -6,7 +6,7 @@ import { error } from "console";
 
 export const getAruinkoAuthUrl = async (serviceType: 'Google' | 'Office360') => {
 
-    const { userId } = auth();
+    const { userId } = await auth();
     if (!userId) throw new Error('Unauthorized');
 
     const params = new URLSearchParams({

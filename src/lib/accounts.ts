@@ -32,10 +32,10 @@ export class Account {
         if (pageToken) params.pageToken = pageToken;
 
         const response = await axios.get<SyncUpdatedResponse>(`https://api.aurinko.io/v1/email/sync/updated`, {
+            params,
             headers: {
                 Authorization: `Bearer ${this.token}`,
             },
-            params: params
 
         })
 

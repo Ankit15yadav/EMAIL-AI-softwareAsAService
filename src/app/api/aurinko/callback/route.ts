@@ -3,7 +3,7 @@
 import { exhangeCodeForAccessToken, getAccountDetails } from "@/lib/aurinko";
 import { db } from "@/server/db";
 import { auth } from "@clerk/nextjs/server";
-import { url } from "inspector";
+// import { url } from "inspector";
 import { NextRequest, NextResponse } from "next/server";
 import { waitUntil } from "@vercel/functions"
 import axios from "axios";

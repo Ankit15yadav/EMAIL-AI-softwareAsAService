@@ -8,6 +8,7 @@ import { Separator } from '@/components/ui/separator'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import AccountSwitcher from './account-switcher'
 import Sidebar from './sidebar'
+import ThreadList from './thread-list'
 // import { TabsTrigger } from '@radix-ui/react-tabs'
 
 type Props = {
@@ -72,10 +73,10 @@ const Mail = ({ defaultLayout = [20, 32, 48], navCollapsedSize, defaultCollapse 
                             {/* /search bar */}
                             search bar
                             <TabsContent value='inbox'>
-                                inbox
+                                <ThreadList />
                             </TabsContent>
                             <TabsContent value='done'>
-                                done
+                                <ThreadList />
                             </TabsContent>
                         </Tabs>
                     </ResizablePanel>
