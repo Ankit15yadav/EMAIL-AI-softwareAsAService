@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import AccountSwitcher from './account-switcher'
 import Sidebar from './sidebar'
 import ThreadList from './thread-list'
+import ThreadDisplay from './thread-display'
 // import { TabsTrigger } from '@radix-ui/react-tabs'
 
 type Props = {
@@ -85,7 +86,7 @@ const Mail = ({ defaultLayout = [20, 32, 48], navCollapsedSize, defaultCollapse 
                         defaultSize={defaultLayout[2]}
                         minSize={30}
                     >
-                        Thread display
+                        <ThreadDisplay />
                     </ResizablePanel>
                 </ResizablePanelGroup>
             </TooltipProvider>

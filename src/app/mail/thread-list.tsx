@@ -36,7 +36,7 @@ const ThreadList = () => {
                                 return <button key={thread.id}
                                     onClick={() => setThreadId(thread.id)}
                                     className={cn('flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all relative', {
-                                        'bg-gray-200': thread.id === threadId
+                                        'bg-accent': thread.id === threadId
                                     })}>
                                     <div className=' flex flex-col w-full gap-2'>
                                         <div className='flex items-center'>
