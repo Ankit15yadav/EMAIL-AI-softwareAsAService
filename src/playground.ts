@@ -1,13 +1,5 @@
-import { db } from "./server/db";
+import { Account } from "./lib/accounts";
 
-await db.user.create({
-    data: {
-        emailAddress: 'test@gmail',
-        firstName: "ankit",
-        lastName: "yadav",
+const acc = new Account('Aif6Z0hs-ASOYN3b0eL01lAcjAB-wB29dXq9Wtn0TOk')
 
-
-    }
-})
-
-console.log('done');
+await acc.syncEmails()

@@ -32,7 +32,7 @@ const ThreadList = () => {
                             {date}
                         </div>
                         {
-                            threads.map(thread => {
+                            (threads as any[]).map(thread => {
                                 return <button key={thread.id}
                                     onClick={() => setThreadId(thread.id)}
                                     className={cn('flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all relative', {
@@ -67,20 +67,18 @@ const ThreadList = () => {
                                     {thread.emails[0]?.sysLabels.length && (
                                         <div className=' flex items-center gap-2'>
                                             {
-                                                thread.emails[0]?.sysLabels.map(label => {
+                                                thread.emails[0]?.sysLabels.map((label: string) => {
                                                     return <Badge className='text-xs font-medium' key={label} variant={getBadgeVariantFromLabel(label)}>
                                                         {label}
                                                     </Badge>
-                                                })
-                                            }
+                                                })}
                                         </div>
                                     )}
                                 </button>
                             })
                         }
                     </React.Fragment >
-                })}
-            </div>
+                })}            </div>
         </div>
     )
 }

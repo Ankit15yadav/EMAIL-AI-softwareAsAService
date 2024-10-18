@@ -2,6 +2,7 @@ import { z } from "zod"
 import { createTRPCRouter, privateProcedure } from "../trpc"
 import { db } from "@/server/db"
 import { Prisma } from "@prisma/client"
+import { Account } from "@/lib/accounts"
 
 // Authorize account access with better error handling
 export const authoriseAccountAccess = async (accountId: string, userId: string) => {
@@ -83,6 +84,8 @@ export const accountRouter = createTRPCRouter({
     })).query(async ({ ctx, input }) => {
         try {
             const account = await authoriseAccountAccess(input.accountId, ctx.auth.userId);
+            const acc = new Account(account.accessToken);
+            await acc.syncEmails().catch(console.error);
 
             let filter: Prisma.ThreadWhereInput = {
                 accountId: account.id, // Add accountId filter here
