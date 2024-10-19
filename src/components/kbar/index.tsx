@@ -2,16 +2,19 @@
 import { Action, KBarAnimator, KBarPortal, KBarPositioner, KBarProvider, KBarSearch } from "kbar"
 import RenderResults from "./render-results";
 import { useLocalStorage } from "usehooks-ts";
+import useThemeSwitching from "./use-theme-switching";
 
 export default function KBar({ children }: { children: React.ReactNode }) {
 
     const [tab, setTab] = useLocalStorage('email-tab', 'inbox');
+    const [done, setDone] = useLocalStorage('email-done', false);
 
     const actions: Action[] = [
         {
             id: 'inbox',
             name: 'Inbox',
             shortcut: ['g', 'i'],
+            keywords: 'inbox',
             section: 'Navigation',
             subtitle: 'View your inbox',
             perform: () => {
@@ -22,6 +25,7 @@ export default function KBar({ children }: { children: React.ReactNode }) {
             id: 'draftsAction',
             name: 'Drafts',
             shortcut: ['g', 'd'],
+            keywords: 'drafts',
             section: 'Navigation',
             subtitle: 'View your drafts',
             perform: () => {
@@ -33,12 +37,36 @@ export default function KBar({ children }: { children: React.ReactNode }) {
             name: 'Sent',
             shortcut: ['g', 's'],
             section: 'Navigation',
+            keywords: 'sent',
             subtitle: 'View the sent',
             perform: () => {
                 setTab('sent');
             }
         },
+        {
+            id: 'pendingAction',
+            name: 'see done',
+            shortcut: ['g', 'f'],
+            section: 'Done',
+            subtitle: 'View the done emails',
+            perform: () => {
+                setDone(true);
+            }
+        },
+        {
+            id: 'doneAction',
+            name: 'see Pending',
+            shortcut: ['g', 'p'],
+            keywords: 'pending , undone , not done',
+            section: 'Navigation',
+            subtitle: 'View the pending emails',
+            perform: () => {
+                setDone(false);
+            }
+        },
+
     ]
+
 
     return <KBarProvider actions={actions}>
         <ActualComponent>
@@ -48,6 +76,8 @@ export default function KBar({ children }: { children: React.ReactNode }) {
 }
 
 const ActualComponent = ({ children }: { children: React.ReactNode }) => {
+    useThemeSwitching();
+
     return <>
         <KBarPortal>
             <KBarPositioner className=" fixed inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-sm scrollbar0hide !p-0 z-[999]">
