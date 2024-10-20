@@ -3,6 +3,7 @@ import { Action, KBarAnimator, KBarPortal, KBarPositioner, KBarProvider, KBarSea
 import RenderResults from "./render-results";
 import { useLocalStorage } from "usehooks-ts";
 import useThemeSwitching from "./use-theme-switching";
+import useAccountSwitching from "./use-account-switching";
 
 export default function KBar({ children }: { children: React.ReactNode }) {
 
@@ -47,7 +48,7 @@ export default function KBar({ children }: { children: React.ReactNode }) {
             id: 'pendingAction',
             name: 'see done',
             shortcut: ['g', 'f'],
-            section: 'Done',
+            section: 'Navigation',
             subtitle: 'View the done emails',
             perform: () => {
                 setDone(true);
@@ -77,6 +78,7 @@ export default function KBar({ children }: { children: React.ReactNode }) {
 
 const ActualComponent = ({ children }: { children: React.ReactNode }) => {
     useThemeSwitching();
+    useAccountSwitching();
 
     return <>
         <KBarPortal>

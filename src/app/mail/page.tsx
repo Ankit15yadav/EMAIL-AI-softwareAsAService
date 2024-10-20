@@ -1,4 +1,5 @@
 import ThemeToggle from '@/components/theme-toggle'
+import { UserButton } from '@clerk/nextjs'
 import dynamic from 'next/dynamic'
 import React from 'react'
 // import Mail from './mail'
@@ -13,7 +14,11 @@ const MailDashboard = () => {
     return (
         <>
             <div className=' absolute bottom-4 left-4' >
-                <ThemeToggle />
+                <div className="flex item-center gap-2">
+                    <UserButton />
+                    <ThemeToggle />
+
+                </div>
             </div>
             <Mail
                 defaultCollapse={false}
