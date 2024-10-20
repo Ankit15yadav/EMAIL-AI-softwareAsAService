@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import {
     Dialog,
     DialogContent,
@@ -17,21 +17,18 @@ import { readStreamableValue } from 'ai/rsc'
 import useThreads from '@/hooks/use-threads'
 import { turndown } from '@/lib/turndown'
 
-
 type Props = {
     isComposing?: boolean,
     onGenerate: (token: string) => void,
 }
 
 const AIComposeButton = ({ isComposing, onGenerate }: Props) => {
-
-    const [open, setOpen] = React.useState(false)
-    const [prompt, setPrompt] = React.useState('')
+    const [open, setOpen] = useState(false)
+    const [prompt, setPrompt] = useState('')
     const { threads, threadId, account } = useThreads();
     const thread = threads?.find(t => t.id === threadId)
 
     const aiGenerate = async () => {
-
         let context = ''
 
         if (!isComposing) {
@@ -48,8 +45,6 @@ const AIComposeButton = ({ isComposing, onGenerate }: Props) => {
             context += `
             My name is ${account?.name} and my email is ${account?.emailAddress}   
             `
-
-            console.log(context);
         }
 
         const { output } = await generateEmail(context, prompt);
@@ -66,9 +61,7 @@ const AIComposeButton = ({ isComposing, onGenerate }: Props) => {
                 <Button size='icon' variant={'outline'}
                     onClick={() => setOpen(true)}
                 >
-                    <Bot
-                        className='size-5'
-                    />
+                    <Bot className='size-5' />
                 </Button>
             </DialogTrigger>
             <DialogContent>
@@ -96,7 +89,6 @@ const AIComposeButton = ({ isComposing, onGenerate }: Props) => {
                 </DialogHeader>
             </DialogContent>
         </Dialog>
-
     )
 }
 

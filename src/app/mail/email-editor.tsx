@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { EditorContent, useEditor } from "@tiptap/react"
 import { StarterKit } from "@tiptap/starter-kit"
 import { Text } from "@tiptap/extension-text"
@@ -78,10 +78,17 @@ const EmailEditor = ({ ccValues, defaultToolbarExpand, handleSend, isSending, se
     }, [token, editor]);
 
 
-    const onGenerate = (token: string) => {
-        // console.log(token)
-        editor?.commands.insertContent(token);
-    }
+    // const onGenerate = (token: string) => {
+    //     // console.log(token)
+    //     editor?.commands.insertContent(token);
+    // }
+
+    const onGenerate = useCallback((content: string) => {
+        const formattedContent = content.split('\n\n').map(paragraph => `<p>${paragraph}</p>`).join(' ')
+        editor?.commands.insertContent(formattedContent, {
+            parseOptions: { preserveWhitespace: 'full' },
+        })
+    }, [editor])
 
     if (!editor) return null;
 

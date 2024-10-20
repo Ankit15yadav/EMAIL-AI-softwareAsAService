@@ -16,7 +16,6 @@ import { format } from 'date-fns'
 import EmailDisplay from './email-display'
 import ReplyBox from './reply-box'
 
-
 const ThreadDisplay = () => {
 
     const { threadId, threads } = useThreads()
@@ -64,6 +63,7 @@ const ThreadDisplay = () => {
             {/* Thread Body */}
             {thread ? (
                 <div className="flex flex-col flex-1 overflow-hidden">
+                    {/* Email Header */}
                     <div className="flex items-center p-4">
                         <div className="flex items-center gap-4 text-sm">
                             <Avatar>
@@ -95,16 +95,16 @@ const ThreadDisplay = () => {
                     <div className="flex-1 overflow-y-auto p-6">
                         <div className="flex flex-col gap-4">
                             {thread.emails.map(email => (
-                                <div key={email.id}>
-                                    <EmailDisplay email={email} />
-                                </div>
+                                <EmailDisplay key={email.id} email={email} />
                             ))}
                         </div>
                     </div>
+
                     <Separator />
-                    {/* <div className='h-14'> */}
-                    <ReplyBox />
-                    {/* </div> */}
+                    {/* Reply Box */}
+                    <div className="p-4">
+                        <ReplyBox />
+                    </div>
                 </div>
             ) : (
                 <div className="p-8 text-center text-muted-foreground">
@@ -112,8 +112,7 @@ const ThreadDisplay = () => {
                 </div>
             )}
         </div>
-
     )
 }
 
-export default ThreadDisplay
+export default ThreadDisplay;
