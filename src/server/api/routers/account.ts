@@ -4,6 +4,8 @@ import { db } from "@/server/db"
 import { Prisma } from "@prisma/client"
 import { Account } from "@/lib/accounts"
 import { add } from "date-fns"
+import { fromJSON } from "postcss"
+import { emailAddressSchema } from "@/types"
 
 // Authorize account access with better error handling
 export const authoriseAccountAccess = async (accountId: string, userId: string) => {
@@ -190,5 +192,36 @@ export const accountRouter = createTRPCRouter({
             from: { name: account.name, address: account.emailAddress },
             id: lastExternalEmail.internetMessageId,
         }
-    })
+    }),
+
+    sendEmail: privateProcedure.input(z.object({
+        accountId: z.string(),
+        body: z.string(),
+        subject: z.string(),
+        from: emailAddressSchema,
+        cc: z.array(emailAddressSchema).optional(),
+        bcc: z.array(emailAddressSchema).optional(),
+        to: z.array(emailAddressSchema),
+
+        replyTo: emailAddressSchema,
+        inReplyTo: z.string().optional(),
+
+        threadId: z.string().optional()
+    })).mutation(async ({ ctx, input }) => {
+
+        const account = await authoriseAccountAccess(input.accountId, ctx.auth.userId)
+        const acc = new Account(account.accessToken);
+        await acc.sendEmail({
+            body: input.body,
+            subject: input.subject,
+            from: input.from,
+            cc: input.cc,
+            bcc: input.bcc,
+            to: input.to,
+            replyTo: input.replyTo,
+            inReplyTo: input.inReplyTo ?? '',
+            threadId: input.threadId,
+        })
+
+    }),
 })

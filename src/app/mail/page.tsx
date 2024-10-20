@@ -2,6 +2,7 @@ import ThemeToggle from '@/components/theme-toggle'
 import { UserButton } from '@clerk/nextjs'
 import dynamic from 'next/dynamic'
 import React from 'react'
+import ComposeButton from './compose-button'
 // import Mail from './mail'
 const Mail = dynamic(() => {
     return import('./mail')
@@ -17,6 +18,7 @@ const MailDashboard = () => {
                 <div className="flex item-center gap-2">
                     <UserButton />
                     <ThemeToggle />
+                    <ComposeButton />
 
                 </div>
             </div>

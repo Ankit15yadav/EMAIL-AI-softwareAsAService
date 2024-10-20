@@ -12,23 +12,47 @@ import {
     DrawerTrigger,
 } from "@/components/ui/drawer"
 import { Button } from '@/components/ui/button'
+import { Pencil } from 'lucide-react'
+import EmailEditor from './email-editor'
 
 
 const ComposeButton = () => {
+
+    const [toValues, setToValues] = React.useState<{ label: string, value: string }[]>([])
+    const [ccValues, setccValues] = React.useState<{ label: string, value: string }[]>([])
+    const [subject, setSubject] = React.useState('')
+
+    const handleSend = async () => {
+        console.log(toValues, ccValues, subject)
+    }
+
     return (
         <Drawer>
-            <DrawerTrigger>Open</DrawerTrigger>
+            <DrawerTrigger asChild>
+                <Button>
+                    <Pencil
+                        className='size-4 mr-1'
+                    />
+                    Compose
+                </Button>
+            </DrawerTrigger>
+
             <DrawerContent>
                 <DrawerHeader>
-                    <DrawerTitle>Are you absolutely sure?</DrawerTitle>
-                    <DrawerDescription>This action cannot be undone.</DrawerDescription>
+                    <DrawerTitle>Compose Email</DrawerTitle>
                 </DrawerHeader>
-                <DrawerFooter>
-                    <Button>Submit</Button>
-                    <DrawerClose>
-                        <Button variant="outline">Cancel</Button>
-                    </DrawerClose>
-                </DrawerFooter>
+                <EmailEditor
+                    toValues={toValues}
+                    setTovalues={setToValues}
+                    ccValues={ccValues}
+                    setCcValues={setccValues}
+                    subject={subject}
+                    setSubject={setSubject}
+                    handleSend={handleSend}
+                    isSending={false}
+                    to={toValues.map(to => to.value)}
+                    defaultToolbarExpand={true}
+                />
             </DrawerContent>
         </Drawer>
 

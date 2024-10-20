@@ -1,8 +1,9 @@
 import { db } from "@/server/db";
-import { EmailMessage, SyncResponse, SyncUpdatedResponse } from "@/types";
+import { EmailAddress, EmailMessage, SyncResponse, SyncUpdatedResponse } from "@/types";
 import axios from "axios";
 import { deleteAppClientCache } from "next/dist/server/lib/render-server";
 import { syncEmailsToDatabase } from "./sync-to-db";
+import { RefreshCcw } from "lucide-react";
 
 export class Account {
     private token: string;
@@ -183,6 +184,53 @@ export class Account {
         return {
             emails: allEmails,
             deltaToken: storedDeltaToken
+        }
+    }
+
+    async sendEmail({
+        body, from, inReplyTo, threadId, references, subject, to, bcc, cc, replyTo,
+    }: {
+        from: EmailAddress,
+        subject: string,
+        body: string,
+        inReplyTo?: string,
+        references?: string,
+        to: EmailAddress[],
+        cc?: EmailAddress[],
+        bcc?: EmailAddress[],
+        replyTo?: EmailAddress,
+        threadId?: string,
+    }) {
+        try {
+
+            const response = await axios.post(`https://api.aurinko.io/v1/email/messages`, {
+                from,
+                inReplyTo,
+                subject, body,
+                references,
+                to,
+                cc,
+                bcc,
+                replyTo: [replyTo],
+                threadId,
+            }, {
+                params: {
+                    returnIds: true
+                },
+                headers: {
+                    Authorization: `Bearer ${this.token}`
+                }
+            })
+
+            console.log(response.data);
+            return response.data;
+
+        } catch (err) {
+            if (axios.isAxiosError(err)) {
+                console.log('Error sending email', JSON.stringify(err.response?.data, null, 2));
+            }
+            else
+                console.log('Error sending email', err);
         }
     }
 
