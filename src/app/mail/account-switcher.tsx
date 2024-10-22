@@ -57,7 +57,7 @@ const AccountSwitcher = ({ isCollapsed }: Props) => {
                         const authurl = await getAruinkoAuthUrl('Google')
                         window.location.href = authurl;
                     }}
-                    className=' flex  hover:bg-gray-50 w-full cursor-pointer items-center rounded-sm py-1.5 pl-2 pr-8 text-sm outline-none focus:bg-none'>
+                    className=' flex dark:bg-gray-700    hover:bg-gray-50 w-full cursor-pointer items-center rounded-sm py-1.5 pl-2 pr-8 text-sm outline-none focus:bg-none'>
                     <Plus className=' size-4 mr-1' />
                     Add Account
                 </div>

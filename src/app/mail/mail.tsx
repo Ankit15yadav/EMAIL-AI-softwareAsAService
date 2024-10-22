@@ -10,6 +10,7 @@ import AccountSwitcher from './account-switcher'
 import Sidebar from './sidebar'
 import ThreadList from './thread-list'
 import ThreadDisplay from './thread-display'
+import SearchBar from './search-bar'
 // import { TabsTrigger } from '@radix-ui/react-tabs'
 
 type Props = {
@@ -72,7 +73,7 @@ const Mail = ({ defaultLayout = [20, 32, 48], navCollapsedSize, defaultCollapse 
                             </div>
                             <Separator />
                             {/* /search bar */}
-                            search bar
+                            <SearchBar />
                             <TabsContent value='inbox'>
                                 <ThreadList />
                             </TabsContent>

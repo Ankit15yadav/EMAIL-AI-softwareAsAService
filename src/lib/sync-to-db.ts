@@ -4,16 +4,28 @@ import { EmailMessage, EmailAddress, EmailAttachment } from "@/types";
 import { error } from "console";
 import { Registry } from "node_modules/superjson/dist/registry";
 import pLimit from 'p-limit'
+import { OramaClient } from "./orama";
 
 export async function syncEmailsToDatabase(emails: EmailMessage[], accountId: string) {
     console.log('attempting to sync emails to database ', emails.length);
 
     const limit = pLimit(5);
 
+    const orama = new OramaClient(accountId);
+    await orama.intialize();
+
     try {
 
         // Promise.all(emails.map((email, index) => upsertEmail(email, accountId, index)))
         for (const email of emails) {
+            orama.insert({
+                subject: email.subject,
+                body: email.body ?? '',
+                from: email.from.address ?? '',
+                to: email.to.map(to => to.address) ?? [],
+                sentAt: email.sentAt.toLocaleString(),
+                threadId: email.threadId,
+            })
             await upsertEmail(email, accountId, 0);
         }
 

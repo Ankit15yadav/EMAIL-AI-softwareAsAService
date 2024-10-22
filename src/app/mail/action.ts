@@ -52,7 +52,7 @@ export async function generate(input: string) {
 
     (async () => {
         const { textStream } = await streamText({
-            model: google('gemini-1.0-pro'),
+            model: google('gemini-1.5-pro-latest'),
             prompt: `
             You are a helpful AI embedded in an email client app that is used to autocomplete sentences, similar to Google Gmail autocomplete.
             The traits of AI include expert knowledge, helpfulness, cleverness, and articulateness.
