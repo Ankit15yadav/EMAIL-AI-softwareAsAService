@@ -11,18 +11,20 @@ datasource db {
 }
 
 model User {
-    id String @id @default (cuid())
-    emailAddress String @unique
-    firstName String
-    lastName String
-    imageUrl String?
-    accounts Account[]
+    id           String  @id @default(cuid())
+    emailAddress String  @unique
+    firstName    String?
+    lastName     String?
+    imageUrl     String?
 
-      stripeSubscriptionId String?             @unique
+    stripeSubscriptionId String?             @unique
     stripeSubscription   StripeSubscription? @relation(fields: [stripeSubscriptionId], references: [id])
 
     role Role @default(user)
-     chatbotInteraction ChatbotInteraction?
+
+    accounts Account[]
+
+    chatbotInteraction ChatbotInteraction?
 }
 
 enum Role {
@@ -59,25 +61,25 @@ model StripeSubscription {
     updatedAt        DateTime @updatedAt
 }
 
-model Account{
-    id String @id @default(cuid())
+model Account {
+    id     String @id @default(cuid())
     userId String
 
+    binaryIndex Json?
 
-    accessToken String @unique
-
+    token        String @unique
+    provider     String
     emailAddress String
-    name String
+    name         String
+
     nextDeltaToken String?
 
-    oramaIndex String?
-
-    user User @relation(fields: [userId], references: [id])
-
-     threads        Thread[]
+    user           User           @relation(fields: [userId], references: [id])
+    threads        Thread[]
     emailAddresses EmailAddress[]
 }
 
+//     // "dev": "next dev --turbo | egrep -v '^\\s?(GET|POST|OPTIONS)'",
 
 model Thread {
     id              String   @id @default(cuid())

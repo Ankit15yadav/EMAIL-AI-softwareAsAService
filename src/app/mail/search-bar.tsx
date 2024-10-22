@@ -8,8 +8,8 @@ import { HardDrive, Loader2, Search, X } from 'lucide-react'
 import { useTheme } from 'next-themes'
 import React from 'react'
 
-const searchValueAtom = atom('');
-const isSearchingAtom = atom(false)
+export const searchValueAtom = atom('');
+export const isSearchingAtom = atom(false)
 
 const SearchBar = () => {
 
@@ -31,18 +31,21 @@ const SearchBar = () => {
                 value={searchValue}
                 onChange={e => setSearchValue(e.target.value)}
                 onFocus={() => setIsSearching(true)}
-                onBlur={() => handleBlur}
+                onBlur={() => handleBlur()}
             />
             <div className=' absolute right-2 top-2.5 flex items-center justify-center gap-2'>
                 {isFetching && <Loader2 className=' size-4 animate-spin text-gray-400' />}
                 <button
                     className=' rounded-sm hover:bg-gray-400/20 '
-                    onClick={() => setSearchValue('')}
+                    onClick={() => {
+                        setIsSearching(false)
+                        setSearchValue('')
+                    }}
                 >
                     <X className=' size-4  text-gray-400' />
                 </button>
             </div>
-        </div>
+        </div >
     )
 }
 
