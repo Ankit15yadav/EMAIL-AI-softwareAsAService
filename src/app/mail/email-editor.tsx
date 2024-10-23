@@ -126,8 +126,8 @@ const EmailEditor = ({ ccValues, defaultToolbarExpand, handleSend, isSending, se
                         </>
                     )
                 }
-                <div className=' flex items-center gap-2'>
-                    <div className=' cursor-pointer'
+                <div className=' flex flex-col  justify-start gap-2'>
+                    <div className='cursor-pointer flex items-center gap-2'
                         onClick={() => setExpanded(!expanded)}
                     >
                         <span className=' text-green-600 font-medium'>
@@ -137,10 +137,13 @@ const EmailEditor = ({ ccValues, defaultToolbarExpand, handleSend, isSending, se
                             to {to.join(',')}
                         </span>
                     </div>
-                    <AIComposeButton
-                        isComposing={defaultToolbarExpand}
-                        onGenerate={onGenerate}
-                    />
+                    <div className='flex justify-start'>
+                        <AIComposeButton
+                            isComposing={defaultToolbarExpand}
+                            onGenerate={onGenerate}
+                        />
+                    </div>
+
                 </div>
             </div>
 

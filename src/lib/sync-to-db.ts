@@ -5,6 +5,8 @@ import { error } from "console";
 import { Registry } from "node_modules/superjson/dist/registry";
 import pLimit from 'p-limit'
 import { OramaClient } from "./orama";
+import { turndown } from "./turndown";
+import { getEmbeddings } from "./embeddings";
 
 export async function syncEmailsToDatabase(emails: EmailMessage[], accountId: string) {
     console.log('attempting to sync emails to database ', emails.length);
@@ -18,13 +20,19 @@ export async function syncEmailsToDatabase(emails: EmailMessage[], accountId: st
 
         // Promise.all(emails.map((email, index) => upsertEmail(email, accountId, index)))
         for (const email of emails) {
+
+            const body = turndown.turndown(email.body ?? email.bodySnippet ?? "")
+            const embeddings = await getEmbeddings(body);
+
             orama.insert({
                 subject: email.subject,
-                body: email.body ?? '',
+                body: body,
                 from: email.from.address ?? '',
+                rawBody: email.body ?? '',
                 to: email.to.map(to => to.address) ?? [],
                 sentAt: email.sentAt.toLocaleString(),
                 threadId: email.threadId,
+                embeddings,
             })
             await upsertEmail(email, accountId, 0);
         }

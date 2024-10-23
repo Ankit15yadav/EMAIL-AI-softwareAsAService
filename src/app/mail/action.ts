@@ -9,7 +9,7 @@ export async function generateEmail(context: string, prompt: string) {
 
     (async () => {
         const { textStream } = await streamText({
-            model: google('gemini-1.0-pro'),
+            model: google('gemini-1.5-pro-latest'),
             prompt: `
                  You are an AI email assistant embedded in an email client app. Your purpose is to help the user compose emails by providing suggestions and relevant information based on the context of their previous emails.
         
@@ -52,7 +52,7 @@ export async function generate(input: string) {
 
     (async () => {
         const { textStream } = await streamText({
-            model: google('gemini-1.5-pro-latest'),
+            model: google('gemini-1.0-pro'),
             prompt: `
             You are a helpful AI embedded in an email client app that is used to autocomplete sentences, similar to Google Gmail autocomplete.
             The traits of AI include expert knowledge, helpfulness, cleverness, and articulateness.

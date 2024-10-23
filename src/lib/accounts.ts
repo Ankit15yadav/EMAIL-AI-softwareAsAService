@@ -1,9 +1,9 @@
 import { db } from "@/server/db";
 import { EmailAddress, EmailMessage, SyncResponse, SyncUpdatedResponse } from "@/types";
 import axios from "axios";
-import { deleteAppClientCache } from "next/dist/server/lib/render-server";
+// import { deleteAppClientCache } from "next/dist/server/lib/render-server";
 import { syncEmailsToDatabase } from "./sync-to-db";
-import { RefreshCcw } from "lucide-react";
+// import { RefreshCcw } from "lucide-react";
 
 export class Account {
     private token: string;

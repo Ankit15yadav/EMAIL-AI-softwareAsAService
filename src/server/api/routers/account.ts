@@ -3,12 +3,19 @@ import { createTRPCRouter, privateProcedure } from "../trpc"
 import { db } from "@/server/db"
 import { Prisma } from "@prisma/client"
 import { Account } from "@/lib/accounts"
-import { add } from "date-fns"
-import { fromJSON } from "postcss"
 import { emailAddressSchema } from "@/types"
+import { OramaClient } from "@/lib/orama"
 
 // Authorize account access with better error handling
+// Authorize account access with improved error handling and logging
 export const authoriseAccountAccess = async (accountId: string, userId: string) => {
+    // Check if user is authenticated
+    if (!userId) {
+        console.error("Authorization error: User is not authenticated");
+        throw new Error("User is not authenticated");
+    }
+
+    // Try to fetch the account with the given accountId and userId
     const account = await db.account.findFirst({
         where: {
             id: accountId,
@@ -22,12 +29,28 @@ export const authoriseAccountAccess = async (accountId: string, userId: string) 
         }
     });
 
+    // If the account is not found or unauthorized
     if (!account) {
-        throw new Error("Account not found or unauthorized"); // More specific error message
+        // Check if the account exists but belongs to a different user (unauthorized access)
+        const accountExists = await db.account.findFirst({
+            where: { id: accountId },
+            select: { id: true },
+        });
+
+        if (!accountExists) {
+            console.error(`Authorization error: Account with ID ${accountId} not found for user ${userId}`);
+            throw new Error("Account not found");
+        } else {
+            console.error(`Authorization error: User ${userId} is not authorized to access account ${accountId}`);
+            throw new Error("Unauthorized access");
+        }
     }
 
+    // Log successful authorization
+    console.log(`Authorization successful: User ${userId} has access to account ${accountId}`);
     return account;
-}
+};
+
 
 export const accountRouter = createTRPCRouter({
 
@@ -56,7 +79,7 @@ export const accountRouter = createTRPCRouter({
         tab: z.string()
     })).query(async ({ ctx, input }) => {
         try {
-            const account = await authoriseAccountAccess(input.accountId, ctx.auth.userId);
+            const account = await authoriseAccountAccess(input?.accountId, ctx.auth?.userId);
 
             let filter: Prisma.ThreadWhereInput = {
                 accountId: account.id,  // Add accountId filter here
@@ -224,4 +247,15 @@ export const accountRouter = createTRPCRouter({
         })
 
     }),
+
+    searchEmail: privateProcedure.input(z.object({
+        accountId: z.string(),
+        query: z.string(),
+    })).mutation(async ({ ctx, input }) => {
+        const account = await authoriseAccountAccess(input.accountId, ctx.auth.userId)
+        const orama = new OramaClient(account.id);
+        await orama.intialize();
+        const results = await orama.search({ term: input.query });
+        return results;
+    })
 })
