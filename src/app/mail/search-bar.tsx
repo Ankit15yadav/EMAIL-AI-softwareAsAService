@@ -31,7 +31,7 @@ const SearchBar = () => {
                 value={searchValue}
                 onChange={e => setSearchValue(e.target.value)}
                 onFocus={() => setIsSearching(true)}
-                onBlur={() => handleBlur}
+                onBlur={() => handleBlur()}
             />
             <div className=' absolute right-2 top-2.5 flex items-center justify-center gap-2'>
                 {isFetching && <Loader2 className=' size-4 animate-spin text-gray-400' />}
@@ -40,12 +40,13 @@ const SearchBar = () => {
                     onClick={() => {
                         setSearchValue('')
                         setIsSearching(false)
+
                     }}
                 >
                     <X className=' size-4  text-gray-400' />
                 </button>
             </div>
-        </div>
+        </div >
     )
 }
 
