@@ -15,11 +15,15 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { format } from 'date-fns'
 import EmailDisplay from './email-display'
 import ReplyBox from './reply-box'
+import { useAtom } from 'jotai'
+import { isSearchingAtom } from './search-bar'
+import SearchDisplay from './search-display'
 
 const ThreadDisplay = () => {
 
     const { threadId, threads } = useThreads()
     const thread = threads?.find(t => t.id === threadId);
+    const [isSearching] = useAtom(isSearchingAtom)
 
     return (
         <div className="flex flex-col h-full">
@@ -60,57 +64,64 @@ const ThreadDisplay = () => {
 
             <Separator />
 
-            {/* Thread Body */}
-            {thread ? (
-                <div className="flex flex-col flex-1 overflow-hidden">
-                    {/* Email Header */}
-                    <div className="flex items-center p-4">
-                        <div className="flex items-center gap-4 text-sm">
-                            <Avatar>
-                                <AvatarImage alt="avatar" />
-                                <AvatarFallback>
-                                    {thread.emails[0]?.from?.name?.split(" ").map(chunk => chunk[0]).join("")}
-                                </AvatarFallback>
-                            </Avatar>
-                            <div className="grid gap-1">
-                                <div className="font-semibold">
-                                    {thread.emails[0]?.from.name}
-                                    <div className="text-xs line-clamp-1">{thread.emails[0]?.subject}</div>
-                                    <div className="text-xs line-clamp-1">
-                                        <span className="font-medium">Reply-To :</span> {thread.emails[0]?.from?.address}
+            {
+                isSearching ? <> <SearchDisplay /> </> : (
+                    <>
+                        {/* Thread Body */}
+                        {thread ? (
+                            <div className="flex flex-col flex-1 overflow-hidden">
+                                {/* Email Header */}
+                                <div className="flex items-center p-4">
+                                    <div className="flex items-center gap-4 text-sm">
+                                        <Avatar>
+                                            <AvatarImage alt="avatar" />
+                                            <AvatarFallback>
+                                                {thread.emails[0]?.from?.name?.split(" ").map(chunk => chunk[0]).join("")}
+                                            </AvatarFallback>
+                                        </Avatar>
+                                        <div className="grid gap-1">
+                                            <div className="font-semibold">
+                                                {thread.emails[0]?.from.name}
+                                                <div className="text-xs line-clamp-1">{thread.emails[0]?.subject}</div>
+                                                <div className="text-xs line-clamp-1">
+                                                    <span className="font-medium">Reply-To :</span> {thread.emails[0]?.from?.address}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {thread.emails[0]?.sentAt && (
+                                        <div className="ml-auto text-xs text-muted-foreground">
+                                            {format(new Date(thread.emails[0]?.sentAt), "PPpp")}
+                                        </div>
+                                    )}
+                                </div>
+
+                                <Separator />
+
+                                {/* Email Display Area */}
+                                <div className="flex-1 overflow-y-auto p-6">
+                                    <div className="flex flex-col gap-4">
+                                        {thread.emails.map(email => (
+                                            <EmailDisplay key={email.id} email={email} />
+                                        ))}
                                     </div>
                                 </div>
+
+                                <Separator />
+                                {/* Reply Box */}
+                                <div className="p-4">
+                                    <ReplyBox />
+                                </div>
                             </div>
-                        </div>
-                        {thread.emails[0]?.sentAt && (
-                            <div className="ml-auto text-xs text-muted-foreground">
-                                {format(new Date(thread.emails[0]?.sentAt), "PPpp")}
+                        ) : (
+                            <div className="p-8 text-center text-muted-foreground">
+                                No message Selected
                             </div>
                         )}
-                    </div>
+                    </>
+                )
+            }
 
-                    <Separator />
-
-                    {/* Email Display Area */}
-                    <div className="flex-1 overflow-y-auto p-6">
-                        <div className="flex flex-col gap-4">
-                            {thread.emails.map(email => (
-                                <EmailDisplay key={email.id} email={email} />
-                            ))}
-                        </div>
-                    </div>
-
-                    <Separator />
-                    {/* Reply Box */}
-                    <div className="p-4">
-                        <ReplyBox />
-                    </div>
-                </div>
-            ) : (
-                <div className="p-8 text-center text-muted-foreground">
-                    No message Selected
-                </div>
-            )}
         </div>
     )
 }
