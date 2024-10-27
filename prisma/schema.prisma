@@ -67,12 +67,14 @@ model Account {
 
     binaryIndex Json?
 
-    token        String @unique
+    accessToken        String @unique
     provider     String
     emailAddress String
     name         String
 
     nextDeltaToken String?
+
+    oramaIndex    String?
 
     user           User           @relation(fields: [userId], references: [id])
     threads        Thread[]

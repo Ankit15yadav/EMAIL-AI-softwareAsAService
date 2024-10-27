@@ -53,7 +53,9 @@ export const GET = async (req: NextRequest) => {
             emailAddress: accountDetails.email,
             name: accountDetails.name,
             accessToken: token.accessToken,
+            provider: "aurinko",
         }
+
     })
 
     waitUntil(

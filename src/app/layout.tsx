@@ -15,6 +15,7 @@ import {
 import { TRPCReactProvider } from "@/trpc/react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "sonner";
+import Navbar from "@/components/common/Navbar";
 
 export const metadata: Metadata = {
   title: "Create T3 App",
@@ -35,6 +36,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <Navbar />
             <TRPCReactProvider>
               <KBar>
                 {children}
