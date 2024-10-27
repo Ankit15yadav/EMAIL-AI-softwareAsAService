@@ -14,6 +14,7 @@ export const getAruinkoAuthUrl = async (serviceType: 'Google' | 'Office360') => 
         serviceType,
         scopes: 'Mail.Read Mail.ReadWrite Mail.Send Mail.Drafts Mail.All',
         responseType: 'code',
+
         returnUrl: `${process.env.NEXT_PUBLIC_URL}/api/aurinko/callback`
 
     })
@@ -67,7 +68,10 @@ export const getAccountDetails = async (accessToken: string) => {
             console.log(error.response?.data)
         }
 
-        else console.log(error);
+        else {
+            console.log(error);
+            console.log("first deploy krne k lie daala hai")
+        };
     }
     throw error;
 }
