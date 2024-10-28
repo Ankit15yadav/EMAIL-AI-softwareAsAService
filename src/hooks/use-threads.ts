@@ -5,6 +5,7 @@ import { atom, useAtom } from "jotai";
 
 export const threadIdAtom = atom<string | null>(null)
 
+
 const useThreads = () => {
     const { data: accounts, isFetching, refetch } = api.account.getAccounts.useQuery()
     const [accountId] = useLocalStorage('accountId', '');
