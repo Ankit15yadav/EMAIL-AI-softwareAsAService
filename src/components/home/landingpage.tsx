@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
-import { Mail, Bot, Zap, BarChart, ArrowRight, Shield, Cpu } from 'lucide-react'
+import { Mail, Bot, Zap, BarChart, ArrowRight, Shield, Cpu, FileText, Info } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -48,7 +48,7 @@ const LandingPage: React.FC = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5 }}
                     >
-                        Simplify Your Email Management
+                        AI Email Assistant
                     </motion.h1>
                     <motion.p
                         className="text-xl mb-8 max-w-2xl mx-auto text-gray-700 dark:text-gray-300"
@@ -62,14 +62,22 @@ const LandingPage: React.FC = () => {
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 0.4 }}
+                        className="flex justify-center space-x-4"
                     >
                         <Button size="lg" className="bg-blue-500 hover:bg-blue-600 text-white">
                             <Link href="/mail">
                                 Get Started
                             </Link>
                         </Button>
+                        <Button size="lg" variant="outline" className="bg-transparent border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white">
+                            <Link href="https://privacy-policy-ai-email.vercel.app/" target="_blank" rel="noopener noreferrer" className="flex items-center">
+                                <FileText className="mr-2" /> Privacy Policy
+                            </Link>
+                        </Button>
                     </motion.div>
                 </section>
+
+
 
                 {/* Features Section */}
                 <section className="mb-20">
@@ -222,6 +230,22 @@ const LandingPage: React.FC = () => {
                             </CardContent>
                         </Card>
                     </div>
+                </section>
+
+                {/* Data Usage Transparency Section */}
+                <section className="mb-20 text-center">
+                    <Card className="bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800">
+                        <CardHeader>
+                            <CardTitle className="flex items-center justify-center text-gray-900 dark:text-white">
+                                <Info className="mr-2" /> Why We Need Your Email Data
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <CardDescription className="text-gray-600 dark:text-gray-400">
+                                AI Email Assistant requires access to your email data to provide AI-powered email management, composition, and reply services. We use this data solely to enhance your email experience and do not share it with third parties. Your privacy and data security are our top priorities.
+                            </CardDescription>
+                        </CardContent>
+                    </Card>
                 </section>
 
                 {/* Call to Action Section */}
