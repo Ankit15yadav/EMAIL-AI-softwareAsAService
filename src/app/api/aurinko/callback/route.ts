@@ -30,6 +30,7 @@ export const GET = async (req: NextRequest) => {
     }, { status: 401 })
 
     const token = await exhangeCodeForAccessToken({ code });
+    
 
     if (!token) return NextResponse.json({
         message: "failed to exchange the token",
