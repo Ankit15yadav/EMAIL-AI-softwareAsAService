@@ -2,8 +2,6 @@ import { Account } from "@/lib/accounts";
 import { syncEmailsToDatabase } from "@/lib/sync-to-db";
 import { db } from "@/server/db";
 import { NextRequest, NextResponse } from "next/server";
-import { EmailLinkErrorCode } from "node_modules/@clerk/nextjs/dist/types/client-boundary/hooks";
-import { json } from "stream/consumers";
 
 export const POST = async (req: NextRequest) => {
     const { accountId, userId } = await req.json();
