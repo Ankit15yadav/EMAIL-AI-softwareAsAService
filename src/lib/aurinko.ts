@@ -23,32 +23,40 @@ export const getAruinkoAuthUrl = async (serviceType: 'Google' | 'Office360') => 
 }
 
 
-export const exhangeCodeForAccessToken = async ({ code }: { code: string }) => {
+export const exchangeCodeForAccessToken = async ({ code }: { code: string }) => {
     try {
+        console.log('Attempting to exchange code:', code);
+        const response = await axios.post(
+            `https://api.aurinko.io/v1/auth/token/${code}`,
+            {},
+            {
+                auth: {
+                    username: process.env.AURINKO_CLIENT_ID as string,
+                    password: process.env.AURINKO_CLIENT_SECRET as string,
+                },
+            }
+        );
 
-        const response = await axios.post(`https://api.aurinko.io/v1/auth/token/${code.toString()}`, {}, {
-            auth: {
-                username: process.env.AURINKO_CLIENT_ID as string,
-                password: process.env.AURINKO_CLIENT_SECRET as string,
-            },
-
-        })
-
+        console.log('Token exchange successful:', response.data);
         return response.data as {
             accountId: number,
             accessToken: string,
             userId: string,
             userSession: string,
-        }
-
+        };
     } catch (error) {
         if (axios.isAxiosError(error)) {
-            console.log(error.response?.data)
+            console.error('Axios error during token exchange:', error.response?.data);
+            if (error.response?.data?.code === 'code.expired') {
+                console.log('Authorization code expired, please request a new one.');
+                // Handle re-requesting code logic here if needed.
+            }
+        } else {
+            console.error('Unknown error:', error);
         }
-
-        console.log(error);
     }
-}
+};
+
 
 export const getAccountDetails = async (accessToken: string) => {
     try {
