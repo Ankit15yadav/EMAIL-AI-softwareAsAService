@@ -91,7 +91,7 @@ export const GET = async (req: NextRequest) => {
     waitUntil((async () => {
         try {
             const response = await axios.post(`${process.env.NEXT_PUBLIC_URL}/api/initial-sync`, {
-                accountId: token.accountId,
+                accountId: token.accountId.toString(),
                 userId,
             });
             console.log('Initial sync triggered', response.data);
