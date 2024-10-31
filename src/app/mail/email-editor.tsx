@@ -148,7 +148,9 @@ const EmailEditor = ({ ccValues, defaultToolbarExpand, handleSend, isSending, se
             </div>
 
             <div className='prose w-full py-4 px-4'>
-                <EditorContent editor={editor} value={value} />
+                <div className="h-64 overflow-y-auto"> {/* Adjust height as needed */}
+                    <EditorContent editor={editor} value={value} />
+                </div>
             </div>
 
             <Separator />
